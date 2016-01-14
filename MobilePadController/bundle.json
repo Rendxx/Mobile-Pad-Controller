@@ -1,0 +1,32 @@
+﻿{
+  // [path] section
+  // Define path patterns which will replace the corresponding "#pattern name#" in Gulp task.
+  "path": {
+    "bower": {
+      "src": "bower_components",
+      "dest": "lib"
+    },
+    "js": {
+      "direction": "Direction"
+    },
+    "less": {
+      "direction": "Direction"
+    }
+  },
+
+  // [bundle] section
+  // used to define files need to be processed by gulp task
+  // Note: path pattern will only match the pattern with same name(case insensitive) in the exacting same group
+  // e.g. "#dest#" in [bundle.bower] will only match the "dest" string in [path.bower]
+  "bundle": {
+    "bower": {
+      "#dest#/jquery": "#src#/jquery/dist/jquery*.{js,map}"
+    },
+    "less": {
+      "#direction#/controller.direction": [ "#direction#/style.less" ]
+    },
+    "js": {
+      "#direction#/controller.direction": [ "#direction#/script.js" ]
+    }
+  }
+}
