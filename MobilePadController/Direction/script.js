@@ -10,10 +10,10 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
  * Output the offset from center in 2 format (x,y / degree,strength)
  * Output: 
  * {
- *      x: [int]            (0-100)
- *      y: [int]            (0-100)
- *      degree: [degree]    (0-360, clockwise)
- *      strength: [int]     (0-100)
+ *      x: [int]            (0 - 100)
+ *      y: [int]            (0 - 100)
+ *      degree: [degree]    (-180 - 180, top is 0)
+ *      strength: [int]     (0 - 100)
  * }
  */
 
@@ -39,6 +39,7 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
             range = null,
             offset_x = null,
             offset_y = null,
+            identifier = null,
             // flag
             enabled = false,
             using = false;
@@ -72,10 +73,10 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
             });
 
             if (that.onChange != null) that.onChange({
-                x: x,
-                y: y,
-                strength: strength,
-                degree: degree
+                x: Math.floor(x * 100 / range),
+                y: Math.floor(y * 100 / range),
+                strength: Math.floor(strength*100/range),
+                degree: Math.floor(degree*180/Math.PI)
             });
         };
 
@@ -87,7 +88,7 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
             x -= radius;
             y = radius-y;
             var strength = Math.sqrt(x * x + y * y);
-            var degree = Math.asin(x / strength);
+            var degree = Math.atan2(x, y);
             if (strength > range) {
                 x = x / strength * range;
                 y = y / strength * range;
@@ -99,21 +100,40 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
         // setup
         var _setupFunc = function () {
             html_wrap[0].addEventListener('touchstart', function (e) {
+                event.preventDefault();
                 if (!enabled) return;
+                if (identifier !== null) return;
+                identifier = event.changedTouches[0].identifier;
                 //var touch = event.changedTouches[0];
             }, false);
 
             html_wrap[0].addEventListener('touchmove', function (e) {
+                event.preventDefault();
                 if (!enabled) return;
                 using = true;
-                var touch = event.changedTouches[0];
-                move(touch.clientX - offset_x, touch.clientY - offset_y);
+                if (identifier === null) return;
+                for (var i = 0; i < event.changedTouches.length; i++) {
+                    var touch = event.changedTouches[i];
+                    console.log(touch);
+                    if (touch.identifier == identifier) {
+                        move(touch.clientX - offset_x, touch.clientY - offset_y);
+                        break;
+                    }
+                }
             }, false);
 
             html_wrap[0].addEventListener('touchend', function (e) {
+                event.preventDefault();
                 if (!enabled) return;
-                using = false;
-                move(0, 0);
+                for (var i = 0; i < event.changedTouches.length; i++) {
+                    touch = event.changedTouches[i];
+                    if (touch.identifier == identifier) {
+                        identifier = null;
+                        using = false;
+                        move(0, 0);
+                        break;
+                    }
+                }
             }, false);
         };
 
