@@ -24,6 +24,10 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
         handler: '<div class="_handler"></div>'
     };
 
+    var CssClass = {
+        hover: '_hover'
+    };
+
     var Direction = function (opts) {
         // private property
         var that = this,
@@ -40,6 +44,9 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
             offset_x = null,
             offset_y = null,
             identifier = null,
+            handle_x = null,
+            handle_y = null,
+            animationId = null,
             // flag
             enabled = false,
             using = false;
@@ -50,27 +57,28 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
         // public function
         this.show = function (opts) {
             if (opts != null) _setOpts(opts);
+            html_handler.removeClass(CssClass.hover);
             html_wrap.show();
 
             var rect = html_wrap[0].getBoundingClientRect()
             offset_x = rect.left;
             offset_y = rect.top;
             enabled = true;
+            showHandle();
         };
 
         this.hide = function () {
             enabled = false;
+            removeAnimation();
             html_wrap.hide();
             if (using) move(0,0);
             using = false;
         };
 
         // private function
-        var output = function (x, y, strength, degree){
-            html_handler.css({
-                'left': x + 'px',
-                'top': -y + 'px'
-            });
+        var output = function (x, y, strength, degree) {
+            handle_x = x;
+            handle_y = -y;
 
             if (that.onChange != null) that.onChange({
                 x: Math.floor(x * 100 / range),
@@ -97,6 +105,19 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
             output(x, y, strength, degree);
         };
 
+        var showHandle = function () {
+            html_handler.css({
+                'left': handle_x + 'px',
+                'top': handle_y + 'px'
+            });
+            animationId = requestAnimationFrame(showHandle);
+        };
+
+        var removeAnimation = function () {
+            if (animationId !== null) cancelAnimationFrame(animationId);
+            animationId = null;
+        };
+
         // setup
         var _setupFunc = function () {
             html_wrap[0].addEventListener('touchstart', function (e) {
@@ -104,6 +125,7 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
                 if (!enabled) return;
                 if (identifier !== null) return;
                 identifier = event.changedTouches[0].identifier;
+                html_handler.addClass(CssClass.hover);
                 //var touch = event.changedTouches[0];
             }, false);
 
@@ -128,6 +150,7 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
                 for (var i = 0; i < event.changedTouches.length; i++) {
                     touch = event.changedTouches[i];
                     if (touch.identifier == identifier) {
+                        html_handler.removeClass(CssClass.hover);
                         identifier = null;
                         using = false;
                         move(0, 0);

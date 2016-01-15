@@ -14,6 +14,8 @@
     <IISExpressUseClassicPipelineMode />
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="Direction\Drawing\Controller.Direction.Base.png" />
+    <Content Include="Direction\Drawing\Controller.Direction.Handler.png" />
     <Content Include="gulpfile.js" />
     <Content Include="Direction\sample.html" />
     <Content Include="Direction\script.js" />
@@ -24,6 +26,7 @@
   <ItemGroup>
     <None Include="bower.json" />
     <None Include="bundle.json" />
+    <Content Include="Direction\Drawing\Controller.Direction.fla" />
     <None Include="Direction\style.less" />
     <None Include="package.json" />
   </ItemGroup>
