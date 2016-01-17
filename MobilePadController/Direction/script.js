@@ -118,18 +118,31 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
             animationId = null;
         };
 
+        var _startMove = function (event) {
+            if (identifier !== null) return;
+            identifier = event.changedTouches[0].identifier;
+            html_handler.addClass(CssClass.hover);
+        };
+
         // setup
         var _setupFunc = function () {
-            html_wrap[0].addEventListener('touchstart', function (e) {
+            html_handler[0].addEventListener('touchstart', function (event) {
                 event.preventDefault();
                 if (!enabled) return;
-                if (identifier !== null) return;
-                identifier = event.changedTouches[0].identifier;
-                html_handler.addClass(CssClass.hover);
-                //var touch = event.changedTouches[0];
+                _startMove(event);
             }, false);
 
-            html_wrap[0].addEventListener('touchmove', function (e) {
+            html_handler[0].addEventListener('touchmove', function (event) {
+                if (!enabled) return;
+                _startMove(event);
+            }, false);
+
+            html_wrap[0].addEventListener('touchstart', function (event) {
+                event.preventDefault();
+                if (!enabled) return;
+            }, false);
+
+            html_wrap[0].addEventListener('touchmove', function (event) {
                 event.preventDefault();
                 if (!enabled) return;
                 using = true;
@@ -144,7 +157,7 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
                 }
             }, false);
 
-            html_wrap[0].addEventListener('touchend', function (e) {
+            html_wrap[0].addEventListener('touchend', function (event) {
                 event.preventDefault();
                 if (!enabled) return;
                 for (var i = 0; i < event.changedTouches.length; i++) {
