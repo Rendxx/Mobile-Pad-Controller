@@ -43,8 +43,8 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
             html_base = null,
             html_handler = null,
             // data
-            radius = null,
-            range = null,
+            radius = null,      // radius of handler
+            range = null,       // handler move range 
             base_offset_x = null,
             base_offset_y = null,
             touch_offset_x = null,
@@ -79,7 +79,7 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
             enabled = false;
             removeAnimation();
             html_wrap.hide();
-            if (using) move(0,0);
+            if (using) move(0, 0);
             using = false;
         };
 
@@ -91,19 +91,21 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
             if (that.onChange != null) that.onChange({
                 x: Math.floor(x * 100 / range),
                 y: Math.floor(y * 100 / range),
-                strength: Math.floor(strength*100/range),
-                degree: Math.floor(degree*180/Math.PI)
+                strength: Math.floor(strength * 100 / range),
+                degree: Math.floor(degree * 180 / Math.PI)
             });
         };
 
         // move handle
         var move = function (x, y) {
-            if (x==0 && y==0){
+            x += touch_offset_x;
+            y += touch_offset_y;
+            if (x == 0 && y == 0) {
                 output(0, 0, 0, 0);
                 return;
             }
             x -= radius;
-            y = radius-y;
+            y = radius - y;
             var strength = Math.sqrt(x * x + y * y);
             var degree = Math.atan2(x, y);
             if (strength > range) {
@@ -133,13 +135,9 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
         var _startMove = function (touch) {
             if (identifier !== null) return;
             identifier = touch.identifier;
-            touch_offset_x = touch.clientX
+            touch_offset_x = base_size / 2 - touch.clientX + base_offset_x;
+            touch_offset_y = base_size / 2 - touch.clientY + base_offset_y;
             html_handler.addClass(CssClass.hover);
-        };
-
-        // check whether the handle pass the threshold or not
-        var _checkThreshold = function (x, y) {
-            return (x * x + y * y >= range * range * Env.threshold * Env.threshold);
         };
 
         // setup ---------------------------------------------
@@ -162,8 +160,8 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
                 if (identifier === null) {
                     for (var i = 0; i < event.changedTouches.length; i++) {
                         var touch = event.changedTouches[i];
-                        var x = touch.clientX - base_offset_x - radius;
-                        var y = touch.clientY - base_offset_y - radius;
+                        var x = touch.clientX - base_offset_x - base_size / 2;
+                        var y = touch.clientY - base_offset_y - base_size / 2;
                         if (x * x + y * y <= handler_size * handler_size * Env.triggerRatio * Env.triggerRatio / 4) {
                             _startMove(touch);
                             break;
@@ -189,6 +187,8 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
                         html_handler.removeClass(CssClass.hover);
                         identifier = null;
                         using = false;
+                        touch_offset_x = 0;
+                        touch_offset_y = 0;
                         move(0, 0);
                         break;
                     }
@@ -205,7 +205,7 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
             // data
             handler_size = html_handler.width();
             base_size = html_base.width();
-            radius = base_size/2;
+            radius = base_size / 2;
             range = (base_size - handler_size) / 2;
 
             // css
