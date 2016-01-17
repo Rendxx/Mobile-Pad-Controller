@@ -28,8 +28,12 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
         hover: '_hover'
     };
 
+    var Env = {
+        triggerRatio: 0.5         // ratio of handler trigger
+    };
+
     var Direction = function (opts) {
-        // private property
+        // private property ---------------------------------------------
         var that = this,
             // parameters
             _css = null,
@@ -41,28 +45,32 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
             // data
             radius = null,
             range = null,
-            offset_x = null,
-            offset_y = null,
+            base_offset_x = null,
+            base_offset_y = null,
+            touch_offset_x = null,
+            touch_offset_y = null,
             identifier = null,
             handle_x = null,
             handle_y = null,
             animationId = null,
+            handler_size = null,
+            base_size = null,
             // flag
             enabled = false,
             using = false;
 
-        // callback
+        // callback ---------------------------------------------
         this.onChange = null;
 
-        // public function
+        // public function ---------------------------------------------
         this.show = function (opts) {
             if (opts != null) _setOpts(opts);
             html_handler.removeClass(CssClass.hover);
             html_wrap.show();
 
             var rect = html_wrap[0].getBoundingClientRect()
-            offset_x = rect.left;
-            offset_y = rect.top;
+            base_offset_x = rect.left;
+            base_offset_y = rect.top;
             enabled = true;
             showHandle();
         };
@@ -75,11 +83,11 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
             using = false;
         };
 
-        // private function
+        // private function ---------------------------------------------
+        // output move result
         var output = function (x, y, strength, degree) {
             handle_x = x;
             handle_y = -y;
-
             if (that.onChange != null) that.onChange({
                 x: Math.floor(x * 100 / range),
                 y: Math.floor(y * 100 / range),
@@ -88,6 +96,7 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
             });
         };
 
+        // move handle
         var move = function (x, y) {
             if (x==0 && y==0){
                 output(0, 0, 0, 0);
@@ -105,6 +114,7 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
             output(x, y, strength, degree);
         };
 
+        // update handle position
         var showHandle = function () {
             html_handler.css({
                 'left': handle_x + 'px',
@@ -113,28 +123,31 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
             animationId = requestAnimationFrame(showHandle);
         };
 
+        // clear handler animation
         var removeAnimation = function () {
             if (animationId !== null) cancelAnimationFrame(animationId);
             animationId = null;
         };
 
-        var _startMove = function (event) {
+        // try starting moving handle
+        var _startMove = function (touch) {
             if (identifier !== null) return;
-            identifier = event.changedTouches[0].identifier;
+            identifier = touch.identifier;
+            touch_offset_x = touch.clientX
             html_handler.addClass(CssClass.hover);
         };
 
-        // setup
+        // check whether the handle pass the threshold or not
+        var _checkThreshold = function (x, y) {
+            return (x * x + y * y >= range * range * Env.threshold * Env.threshold);
+        };
+
+        // setup ---------------------------------------------
         var _setupFunc = function () {
             html_handler[0].addEventListener('touchstart', function (event) {
                 event.preventDefault();
                 if (!enabled) return;
-                _startMove(event);
-            }, false);
-
-            html_handler[0].addEventListener('touchmove', function (event) {
-                if (!enabled) return;
-                _startMove(event);
+                _startMove(event.changedTouches[0]);
             }, false);
 
             html_wrap[0].addEventListener('touchstart', function (event) {
@@ -146,12 +159,22 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
                 event.preventDefault();
                 if (!enabled) return;
                 using = true;
-                if (identifier === null) return;
+                if (identifier === null) {
+                    for (var i = 0; i < event.changedTouches.length; i++) {
+                        var touch = event.changedTouches[i];
+                        var x = touch.clientX - base_offset_x - radius;
+                        var y = touch.clientY - base_offset_y - radius;
+                        if (x * x + y * y <= handler_size * handler_size * Env.triggerRatio * Env.triggerRatio / 4) {
+                            _startMove(touch);
+                            break;
+                        }
+                    }
+                    return;
+                }
                 for (var i = 0; i < event.changedTouches.length; i++) {
                     var touch = event.changedTouches[i];
-                    console.log(touch);
                     if (touch.identifier == identifier) {
-                        move(touch.clientX - offset_x, touch.clientY - offset_y);
+                        move(touch.clientX - base_offset_x, touch.clientY - base_offset_y);
                         break;
                     }
                 }
@@ -180,8 +203,8 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
             html_handler = $(HTML.handler).appendTo(html_wrap);
 
             // data
-            var handler_size = html_handler.width();
-            var base_size = html_base.width();
+            handler_size = html_handler.width();
+            base_size = html_base.width();
             radius = base_size/2;
             range = (base_size - handler_size) / 2;
 
@@ -208,4 +231,5 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
         _init(opts);
     };
     Controller.Direction = Direction;
+    Controller.Env = Env;
 })(window.Rendxx.Game.Client.Controller);
