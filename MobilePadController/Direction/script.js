@@ -5,16 +5,21 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
 
 /*
  * Controller.Direction
- * This is a handler can move within a circle. 
+ * This is a control handler for mobile. 
+ * User can move the handler in a circle or tap it.
  * Support only 1 touch point
+ * 
+ * 2 callback:
  * Output the offset from center in 2 format (x,y / degree,strength)
- * Output: 
- * {
+ * onMove: 
+ * ({
  *      x: [int]            (0 - 100)
  *      y: [int]            (0 - 100)
  *      degree: [degree]    (-180 - 180, top is 0)
  *      strength: [int]     (0 - 100)
- * }
+ * })
+ * 
+ * onTap()
  */
 
 (function (Controller) {
@@ -29,7 +34,9 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
     };
 
     var Env = {
-        triggerRatio: 0.5         // ratio of handler trigger
+        triggerRatio: 0.5,          // ratio of handler trigger
+        tapThreshold: 0.1,          // threshold of tapping the handler
+        moveThreshold: 0.1          // any moving not pass this threshold will not be recognized
     };
 
     var Direction = function (opts) {
@@ -57,10 +64,12 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
             base_size = null,
             // flag
             enabled = false,
-            using = false;
+            using = false,
+            tapTime = null;
 
         // callback ---------------------------------------------
-        this.onChange = null;
+        this.onMove = null;
+        this.onTap = null;
 
         // public function ---------------------------------------------
         this.show = function (opts) {
@@ -88,7 +97,8 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
         var output = function (x, y, strength, degree) {
             handle_x = x;
             handle_y = -y;
-            if (that.onChange != null) that.onChange({
+            if (strength <= range * Env.moveThreshold) return;
+            if (that.onMove != null) that.onMove({
                 x: Math.floor(x * 100 / range),
                 y: Math.floor(y * 100 / range),
                 strength: Math.floor(strength * 100 / range),
@@ -107,6 +117,7 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
             x -= radius;
             y = radius - y;
             var strength = Math.sqrt(x * x + y * y);
+            if (strength > range * Env.tapThreshold) tapTime = null;
             var degree = Math.atan2(x, y);
             if (strength > range) {
                 x = x / strength * range;
@@ -146,6 +157,7 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
                 event.preventDefault();
                 if (!enabled) return;
                 _startMove(event.changedTouches[0]);
+                tapTime = (new Date()).getTime();
             }, false);
 
             html_wrap[0].addEventListener('touchstart', function (event) {
@@ -184,6 +196,10 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
                 for (var i = 0; i < event.changedTouches.length; i++) {
                     touch = event.changedTouches[i];
                     if (touch.identifier == identifier) {
+                        if (tapTime != null && (new Date()).getTime()-tapTime<100) {
+                            if (that.onTap) that.onTap();
+                        };
+                        tapTime = null;
                         html_handler.removeClass(CssClass.hover);
                         identifier = null;
                         using = false;

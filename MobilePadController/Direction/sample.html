@@ -64,8 +64,11 @@
             }
         });
 
-        controller.onChange = function (data) {
+        controller.onMove = function (data) {
             monitor.html('x: ' + data.x + '<br/>y: ' + data.y + '<br/>strength: ' + data.strength + '<br/>degree: ' + data.degree);
+        };
+        controller.onTap = function (data) {
+            monitor.html('TAP!');
         };
         controller.show();
     </script>
