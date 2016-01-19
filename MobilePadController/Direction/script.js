@@ -76,7 +76,7 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
         this.show = function (opts) {
             if (opts != null) _setOpts(opts);
             html_handler.removeClass(CssClass.hover);
-            html_wrap.attr('data-content',text);
+            html_base.attr('data-content', text);
             html_wrap.show();
 
             var rect = html_wrap[0].getBoundingClientRect()
