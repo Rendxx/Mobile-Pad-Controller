@@ -198,7 +198,7 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
                 for (var i = 0; i < event.changedTouches.length; i++) {
                     touch = event.changedTouches[i];
                     if (touch.identifier == identifier) {
-                        if (tapTime != null && (new Date()).getTime()-tapTime<100) {
+                        if (tapTime != null && (new Date()).getTime()-tapTime<300) {
                             if (that.onTap) that.onTap();
                         };
                         tapTime = null;

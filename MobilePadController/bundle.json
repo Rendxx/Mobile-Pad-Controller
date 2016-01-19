@@ -7,10 +7,12 @@
       "dest": "lib"
     },
     "js": {
-      "direction": "Direction"
+      "direction": "Direction",
+      "button": "Button"
     },
     "less": {
-      "direction": "Direction"
+      "direction": "Direction",
+      "button": "Button"
     }
   },
 
@@ -23,10 +25,12 @@
       "#dest#/jquery": "#src#/jquery/dist/jquery*.{js,map}"
     },
     "less": {
-      "#direction#/controller.direction": [ "#direction#/style.less" ]
+      "#direction#/controller.direction": [ "#direction#/style.less" ],
+      "#button#/controller.button": [ "#button#/style.less" ]
     },
     "js": {
-      "#direction#/controller.direction": [ "#direction#/script.js" ]
+      "#direction#/controller.direction": [ "#direction#/script.js" ],
+      "#button#/controller.button": [ "#button#/script.js" ]
     }
   }
 }

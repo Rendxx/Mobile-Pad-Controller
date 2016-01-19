@@ -1,0 +1,76 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <script type="text/javascript" src="../lib/jquery.js"></script>
+    <script type="text/javascript" src="controller.button.js"></script>
+    <link type="text/css" rel="stylesheet" href="controller.button.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Button</title>
+    <style>
+        html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #f2f2f2;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .cointainer {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            position:absolute;
+            top:0;
+            left:0;
+        }
+
+        .monitor{
+            text-align: center;
+            font-size: 16px;
+            font-family: Calibri, Arial;
+            color: #eee;
+            background-color: #666;
+            width: 100%;
+            line-height: 24px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 20;
+            padding: 10px 0;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="monitor"></div>
+    <div class="cointainer"></div>
+    <script>
+        var monitor = $('.monitor');
+        var controller = new Rendxx.Game.Client.Controller.Button({
+            container: $('.cointainer'),
+            css: {
+                'right': '0',
+                'top': '25%'                
+            },
+            text: 'BUTTON'
+        });
+
+        var count = 0;
+
+        controller.onTap = function (data) {
+            monitor.html('TAP: '+ ++count);
+        };
+        controller.show();
+    </script>
+</body>
+</html>
