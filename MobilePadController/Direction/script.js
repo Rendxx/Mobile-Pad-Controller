@@ -50,6 +50,7 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
             html_base = null,
             html_handler = null,
             // data
+            text = null,
             radius = null,      // radius of handler
             range = null,       // handler move range 
             base_offset_x = null,
@@ -75,6 +76,7 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
         this.show = function (opts) {
             if (opts != null) _setOpts(opts);
             html_handler.removeClass(CssClass.hover);
+            html_wrap.attr('data-content',text);
             html_wrap.show();
 
             var rect = html_wrap[0].getBoundingClientRect()
@@ -234,6 +236,7 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
 
         var _setOpts = function (opts) {
             if (opts.css) _css = opts.css;
+            if (opts.text) text = opts.text;
         };
 
         var _init = function (opts) {

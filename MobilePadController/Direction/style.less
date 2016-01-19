@@ -20,6 +20,23 @@
         background-position: center center;
         background-repeat: no-repeat;
         background-size: 100% 100%;
+        z-index: 1;
+
+        &::after {
+            content: attr(data-content);
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            color: #888;
+            font-family: Calibri;
+            font-size: 16px;
+            z-index: 1;
+        }
     }
 
     ._handler {
@@ -32,6 +49,7 @@
         background-position: center center;
         background-repeat: no-repeat;
         background-size: 100% 100%;
+        z-index: 10;
 
         &::after {
             content: '';
@@ -40,8 +58,8 @@
             top: 0;
             left: 0;
             border: 1px solid rgba(238, 238, 238, 0.50);
-            margin-top:-1px;
-            margin-left:-1px;
+            margin-top: -1px;
+            margin-left: -1px;
             width: 100%;
             height: 100%;
             border-radius: 50%;
@@ -54,8 +72,8 @@
         &._hover {
             &::after {
                 border: 2px solid rgba(238, 238, 238, 0.80);
-                margin-top:-2px;
-                margin-left:-2px;
+                margin-top: -2px;
+                margin-left: -2px;
                 box-shadow: 0 0 5px rgba(0, 130, 255, 0.90);
             }
         }
