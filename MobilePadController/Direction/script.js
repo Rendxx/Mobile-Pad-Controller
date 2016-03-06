@@ -99,6 +99,7 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
         var output = function (x, y, strength, degree) {
             handle_x = x;
             handle_y = -y;
+            if (strength == 0 && degree == 0) if (that.onMove != null) that.onMove(0, 0, 0, 0);
             if (strength <= range * Env.moveThreshold) return;
             if (that.onMove != null) that.onMove({
                 x: Math.floor(x * 100 / range),
