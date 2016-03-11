@@ -8,11 +8,13 @@
     },
     "js": {
       "direction": "Direction",
-      "button": "Button"
+      "button": "Button",
+      "itemViewer": "ItemViewer"
     },
     "less": {
       "direction": "Direction",
-      "button": "Button"
+      "button": "Button",
+      "itemViewer": "ItemViewer"
     }
   },
 
@@ -26,11 +28,13 @@
     },
     "less": {
       "#direction#/controller.direction": [ "#direction#/style.less" ],
-      "#button#/controller.button": [ "#button#/style.less" ]
+      "#button#/controller.button": [ "#button#/style.less" ],
+      "#itemViewer#/controller.itemViewer": [ "#itemViewer#/style.less" ]
     },
     "js": {
       "#direction#/controller.direction": [ "#direction#/script.js" ],
-      "#button#/controller.button": [ "#button#/script.js" ]
+      "#button#/controller.button": [ "#button#/script.js" ],
+      "#itemViewer#/controller.itemViewer": [ "#itemViewer#/script.js" ]
     }
   }
 }

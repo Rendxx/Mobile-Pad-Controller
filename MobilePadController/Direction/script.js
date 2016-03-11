@@ -251,5 +251,5 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
         _init(opts);
     };
     Controller.Direction = Direction;
-    Controller.Env = Env;
+    Controller.Direction.Env = Env;
 })(window.Rendxx.Game.Client.Controller);

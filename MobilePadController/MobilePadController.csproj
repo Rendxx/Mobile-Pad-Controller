@@ -16,6 +16,11 @@
   <ItemGroup>
     <Content Include="Button\sample.html" />
     <Content Include="Button\script.js" />
+    <Content Include="ItemViewer\Drawing\bag.png" />
+    <Content Include="ItemViewer\Drawing\dot.png" />
+    <Content Include="ItemViewer\Drawing\vintage.png" />
+    <Content Include="ItemViewer\sample.html" />
+    <Content Include="ItemViewer\script.js" />
     <Content Include="Direction\Drawing\Controller.Direction.Base.png" />
     <Content Include="Direction\Drawing\Controller.Direction.Handler.png" />
     <Content Include="gulpfile.js" />
@@ -30,7 +35,9 @@
     <None Include="bundle.json" />
     <Content Include="Direction\Drawing\Controller.Direction.fla" />
     <Content Include="Button\style.less" />
+    <Content Include="ItemViewer\style.less" />
     <None Include="Direction\style.less" />
+    <Content Include="ItemViewer\Drawing\bag.fla" />
     <None Include="package.json" />
   </ItemGroup>
   <PropertyGroup>

@@ -131,5 +131,5 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
         _init(opts);
     };
     Controller.Button = Button;
-    Controller.Env = Env;
+    Controller.Button.Env = Env;
 })(window.Rendxx.Game.Client.Controller);
