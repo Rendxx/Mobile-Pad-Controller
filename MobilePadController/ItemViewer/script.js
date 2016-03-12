@@ -54,11 +54,13 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
         this.show = function () {
             html_wrap.show();
             shown = true;
+            if (that.onShow) that.onShow();
         };
 
         this.hide = function () {
             html_wrap.hide();
             shown = false;
+            if (that.onHide) that.onHide();
         };
 
         this.enable = function () {
@@ -83,6 +85,20 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
             ele.find('span').html(name);
             if (icon !== undefined) ele.css('background-image', 'url("'+ icon +'")');
             html_item[id] = ele;
+        };
+
+        this.updateItem = function (items_in) {
+            for (var i in items) {
+                if (items_in.hasOwnProperty(i)) continue;
+                html_item[i].remove();
+                delete html_item[i];
+                delete items[i];
+            }
+
+            for (var i in items_in) {
+                if (items.hasOwnProperty(i)) continue;
+                this.addItem(i, items_in[i].name, items_in[i].icon);
+            }
         };
 
         this.clear = function () {

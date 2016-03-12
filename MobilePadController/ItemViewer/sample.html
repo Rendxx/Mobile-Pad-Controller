@@ -29,9 +29,9 @@
             padding: 0;
             width: 100%;
             height: 100%;
-            position:absolute;
-            top:0;
-            left:0;
+            position: absolute;
+            top: 0;
+            left: 0;
         }
     </style>
 </head>
@@ -48,9 +48,22 @@
             }
         });
 
-        controller.onShow = function (data) {
+        var itemSet = {
+            0: {
+                name: 'Red Key'
+            },
+            2: {
+                name: 'Room-101 Key'
+            },
+            4: {
+                name: 'Blue Key'
+            }
         };
-        controller.onHide = function (data) {
+
+        controller.onShow = function () {
+        };
+        controller.onHide = function () {
+            controller.updateItem(itemSet);
         };
 
         controller.addItem(0, 'Red Key');
