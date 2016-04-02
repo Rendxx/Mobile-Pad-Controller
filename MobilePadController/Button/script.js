@@ -57,6 +57,8 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
 
         // callback ---------------------------------------------
         this.onTap = null;
+        this.onPress = null;
+        this.onRelease = null;
 
         // public function ---------------------------------------------
         this.show = function (opts) {
@@ -86,6 +88,7 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
                 identifier = touch.identifier;
                 tapTime = (new Date()).getTime();
                 html_handler.addClass(CssClass.hover);
+                if (that.onPress) that.onPress();
             }, false);
 
             html_handler[0].addEventListener('touchend', function (event) {
@@ -94,7 +97,8 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
                 for (var i = 0; i < event.changedTouches.length; i++) {
                     touch = event.changedTouches[i];
                     if (touch.identifier == identifier) {
-                        if (tapTime != null && (new Date()).getTime()-tapTime<300) {
+                        if (that.onRelease) that.onRelease();
+                        if (tapTime != null && (new Date()).getTime() - tapTime < 300) {
                             if (that.onTap) that.onTap();
                         };
                         tapTime = null;
