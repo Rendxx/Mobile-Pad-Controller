@@ -9,11 +9,13 @@
     "js": {
       "direction": "Direction",
       "button": "Button",
+      "info": "Info",
       "itemViewer": "ItemViewer"
     },
     "less": {
       "direction": "Direction",
       "button": "Button",
+      "info": "Info",
       "itemViewer": "ItemViewer"
     }
   },
@@ -29,11 +31,13 @@
     "less": {
       "#direction#/controller.direction": [ "#direction#/style.less" ],
       "#button#/controller.button": [ "#button#/style.less" ],
+      "#info#/controller.info": [ "#info#/style.less" ],
       "#itemViewer#/controller.itemViewer": [ "#itemViewer#/style.less" ]
     },
     "js": {
       "#direction#/controller.direction": [ "#direction#/script.js" ],
       "#button#/controller.button": [ "#button#/script.js" ],
+      "#info#/controller.info": [ "#info#/script.js" ],
       "#itemViewer#/controller.itemViewer": [ "#itemViewer#/script.js" ]
     }
   }

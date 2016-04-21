@@ -16,6 +16,8 @@
   <ItemGroup>
     <Content Include="Button\sample.html" />
     <Content Include="Button\script.js" />
+    <Content Include="Info\sample.html" />
+    <Content Include="Info\script.js" />
     <Content Include="ItemViewer\Drawing\bag.png" />
     <Content Include="ItemViewer\Drawing\dot.png" />
     <Content Include="ItemViewer\Drawing\vintage.png" />
@@ -36,6 +38,7 @@
     <Content Include="Direction\Drawing\Controller.Direction.fla" />
     <Content Include="Button\style.less" />
     <Content Include="ItemViewer\style.less" />
+    <Content Include="Info\style.less" />
     <None Include="Direction\style.less" />
     <Content Include="ItemViewer\Drawing\bag.fla" />
     <None Include="package.json" />
