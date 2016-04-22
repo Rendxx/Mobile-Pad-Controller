@@ -43,6 +43,7 @@
       "#button#/controller.button": [ "#button#/script.js" ],
       "#info#/controller.info": [ "#info#/script.js" ],
       "#move#/controller.move": [
+        "#bower#/transform2D/js/Transform2D.js",
         "#bower#/drawing/js/Drawing.js",
         "#move#/script.js"
       ],

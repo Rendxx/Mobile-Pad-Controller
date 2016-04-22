@@ -17,6 +17,8 @@
     <Content Include="Button\sample.html" />
     <Content Include="Button\script.js" />
     <Content Include="Move\Drawing\Controller.Move.Base.png" />
+    <Content Include="Move\Drawing\Controller.Move.line.bg.png" />
+    <Content Include="Move\Drawing\Controller.Move.line.end.png" />
     <Content Include="Move\sample.html" />
     <Content Include="Move\script.js" />
     <Content Include="Info\sample.html" />
@@ -46,6 +48,7 @@
     <Content Include="Move\style.less" />
     <None Include="Direction\style.less" />
     <Content Include="ItemViewer\Drawing\bag.fla" />
+    <Content Include="Move\Drawing\Controller.Move.line.fla" />
     <None Include="package.json" />
   </ItemGroup>
   <PropertyGroup>
