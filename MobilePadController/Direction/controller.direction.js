@@ -1,10 +1,10 @@
-﻿window.Rendxx = window.Rendxx || {};
+window.Rendxx = window.Rendxx || {};
 window.Rendxx.Game = window.Rendxx.Game || {};
 window.Rendxx.Game.Client = window.Rendxx.Game.Client || {};
 window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {};
 
 /*
- * Controller.Move
+ * Controller.Direction
  * This is a control handler for mobile. 
  * User can move the handler in a circle or tap it.
  * Support only 1 touch point
@@ -24,9 +24,9 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
 
 (function (Controller) {
     var HTML = {
-        wrap: '<div class="controller-move"></div>',
+        wrap: '<div class="controller-direction"></div>',
         base: '<div class="_base"></div>',
-        point: '<div class="_point"></div>',
+        handler: '<div class="_handler"></div>'
     };
 
     var CssClass = {
@@ -34,11 +34,12 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
     };
 
     var Env = {
-        tapThreshold: 5,          // threshold of tapping the handler
-        moveThreshold: 5          // any moving not pass this threshold will not be recognized
+        triggerRatio: 0.5,          // ratio of handler trigger
+        tapThreshold: 0.1,          // threshold of tapping the handler
+        moveThreshold: 0.1          // any moving not pass this threshold will not be recognized
     };
 
-    var Move = function (opts) {
+    var Direction = function (opts) {
         // private property ---------------------------------------------
         var that = this,
             // parameters
@@ -47,27 +48,34 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
             html_container = null,
             html_wrap = null,
             html_base = null,
-            html_point = null,
+            html_handler = null,
             // data
             text = null,
+            radius = null,      // radius of handler
+            range = null,       // handler move range 
             base_offset_x = null,
             base_offset_y = null,
+            touch_offset_x = null,
+            touch_offset_y = null,
             identifier = null,
-            cache_x = null,
-            cache_y = null,
+            handle_x = null,
+            handle_y = null,
+            animationId = null,
+            handler_size = null,
+            base_size = null,
             // flag
             enabled = false,
             using = false,
             tapTime = null;
 
         // callback ---------------------------------------------
-        this.onStop = null;
         this.onMove = null;
         this.onTap = null;
 
         // public function ---------------------------------------------
         this.show = function (opts) {
             if (opts != null) _setOpts(opts);
+            html_handler.removeClass(CssClass.hover);
             html_base.attr('data-content', text);
             html_wrap.show();
 
@@ -75,77 +83,111 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
             base_offset_x = rect.left;
             base_offset_y = rect.top;
             enabled = true;
+            showHandle();
         };
 
         this.hide = function () {
             enabled = false;
+            removeAnimation();
             html_wrap.hide();
-            if (using && that.onStop) that.onStop();
+            if (using) move(0, 0);
             using = false;
         };
 
         // private function ---------------------------------------------
         // output move result
-        var output = function (x, y, degree) {
+        var output = function (x, y, strength, degree) {
+            handle_x = x;
+            handle_y = -y;
+            if (strength == 0 && degree == 0) if (that.onMove != null) that.onMove(0, 0, 0, 0);
+            if (strength <= range * Env.moveThreshold) return;
             if (that.onMove != null) that.onMove({
                 x: Math.floor(x * 100 / range),
                 y: Math.floor(y * 100 / range),
+                strength: Math.floor(strength * 100 / range),
                 degree: Math.floor(degree * 180 / Math.PI)
             });
-            //console.log(x + " , " + y)
         };
 
         // move handle
-        var move = function (x_in, y_in) {
-            var x = x_in - cache_x;
-            var y = y_in - cache_y;
-
+        var move = function (x, y) {
+            x += touch_offset_x;
+            y += touch_offset_y;
+            if (x == 0 && y == 0) {
+                output(0, 0, 0, 0);
+                return;
+            }
+            x -= radius;
+            y = radius - y;
             var strength = Math.sqrt(x * x + y * y);
-            if (strength > Env.tapThreshold) {
-                tapTime = null;
+            if (strength > range * Env.tapThreshold) tapTime = null;
+            var degree = Math.atan2(x, y);
+            if (strength > range) {
+                x = x / strength * range;
+                y = y / strength * range;
+                strength = range;
             }
-            if (strength > Env.moveThreshold) {
-                var degree = Math.atan2(x, y);
-                output(x, y, degree);
-                cache_x = x_in;
-                cache_y = y_in;
-            }
+            output(x, y, strength, degree);
+        };
+
+        // update handle position
+        var showHandle = function () {
+            html_handler.css({
+                'left': handle_x + 'px',
+                'top': handle_y + 'px'
+            });
+            animationId = requestAnimationFrame(showHandle);
+        };
+
+        // clear handler animation
+        var removeAnimation = function () {
+            if (animationId !== null) cancelAnimationFrame(animationId);
+            animationId = null;
         };
 
         // try starting moving handle
         var _startMove = function (touch) {
             if (identifier !== null) return;
             identifier = touch.identifier;
-            html_point.css({
-                "top": touch.clientY - base_offset_y + "px",
-                "left": touch.clientX - base_offset_x + "px"
-            });
-            cache_x = touch.clientX;
-            cache_y = touch.clientY;
-            html_point.show();
+            touch_offset_x = base_size / 2 - touch.clientX + base_offset_x;
+            touch_offset_y = base_size / 2 - touch.clientY + base_offset_y;
+            html_handler.addClass(CssClass.hover);
         };
 
         // setup ---------------------------------------------
         var _setupFunc = function () {
-            html_wrap[0].addEventListener('touchstart', function (event) {
+            html_handler[0].addEventListener('touchstart', function (event) {
                 event.preventDefault();
                 if (!enabled) return;
                 _startMove(event.changedTouches[0]);
                 tapTime = (new Date()).getTime();
             }, false);
 
+            html_wrap[0].addEventListener('touchstart', function (event) {
+                event.preventDefault();
+                if (!enabled) return;
+            }, false);
+
             html_wrap[0].addEventListener('touchmove', function (event) {
                 event.preventDefault();
                 if (!enabled) return;
                 using = true;
+                if (identifier === null) {
+                    for (var i = 0; i < event.changedTouches.length; i++) {
+                        var touch = event.changedTouches[i];
+                        var x = touch.clientX - base_offset_x - base_size / 2;
+                        var y = touch.clientY - base_offset_y - base_size / 2;
+                        if (x * x + y * y <= handler_size * handler_size * Env.triggerRatio * Env.triggerRatio / 4) {
+                            _startMove(touch);
+                            break;
+                        }
+                    }
+                    return;
+                }
                 for (var i = 0; i < event.changedTouches.length; i++) {
                     var touch = event.changedTouches[i];
                     if (touch.identifier == identifier) {
-                        html_point.css({
-                            "top": touch.clientY - base_offset_y + "px",
-                            "left": touch.clientX - base_offset_x + "px"
-                        });
-                        move(touch.clientX, touch.clientY);
+                        move(touch.clientX - base_offset_x, touch.clientY - base_offset_y);
                         break;
                     }
                 }
@@ -157,14 +199,16 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
                 for (var i = 0; i < event.changedTouches.length; i++) {
                     touch = event.changedTouches[i];
                     if (touch.identifier == identifier) {
-                        if (tapTime != null && (new Date()).getTime() - tapTime < 300) {
+                        if (tapTime != null && (new Date()).getTime()-tapTime<300) {
                             if (that.onTap) that.onTap();
                         };
                         tapTime = null;
+                        html_handler.removeClass(CssClass.hover);
                         identifier = null;
                         using = false;
-                        if (that.onStop) that.onStop();
-                        html_point.hide();
+                        touch_offset_x = 0;
+                        touch_offset_y = 0;
+                        move(0, 0);
                         break;
                     }
                 }
@@ -175,14 +219,20 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
             // html
             html_wrap = $(HTML.wrap).appendTo(html_container);
             html_base = $(HTML.base).appendTo(html_wrap);
-            html_point = $(HTML.point).appendTo(html_wrap);
-            html_point.hide();
+            html_handler = $(HTML.handler).appendTo(html_wrap);
 
             // data
-            range = html_base.width();
+            handler_size = html_handler.width();
+            base_size = html_base.width();
+            radius = base_size / 2;
+            range = (base_size - handler_size) / 2;
 
             // css
             html_wrap.css(_css);
+            html_handler.css({
+                'margin-top': range + 'px',
+                'margin-left': range + 'px'
+            });
         };
 
         var _setOpts = function (opts) {
@@ -200,6 +250,7 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
         };
         _init(opts);
     };
-    Controller.Move = Move;
-    Controller.Move.Env = Env;
+    Controller.Direction = Direction;
+    Controller.Direction.Env = Env;
 })(window.Rendxx.Game.Client.Controller);
+//# sourceMappingURL=controller.direction.js.map
