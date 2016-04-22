@@ -9,11 +9,16 @@
     "js": {
       "direction": "Direction",
       "button": "Button",
-      "itemViewer": "ItemViewer"
+      "info": "Info",
+      "move": "Move",
+      "itemViewer": "ItemViewer",
+      "bower": "bower_components"
     },
     "less": {
       "direction": "Direction",
       "button": "Button",
+      "info": "Info",
+      "move": "Move",
       "itemViewer": "ItemViewer"
     }
   },
@@ -29,11 +34,18 @@
     "less": {
       "#direction#/controller.direction": [ "#direction#/style.less" ],
       "#button#/controller.button": [ "#button#/style.less" ],
+      "#info#/controller.info": [ "#info#/style.less" ],
+      "#move#/controller.move": [ "#move#/style.less" ],
       "#itemViewer#/controller.itemViewer": [ "#itemViewer#/style.less" ]
     },
     "js": {
       "#direction#/controller.direction": [ "#direction#/script.js" ],
       "#button#/controller.button": [ "#button#/script.js" ],
+      "#info#/controller.info": [ "#info#/script.js" ],
+      "#move#/controller.move": [
+        "#bower#/drawing/js/Drawing.js",
+        "#move#/script.js"
+      ],
       "#itemViewer#/controller.itemViewer": [ "#itemViewer#/script.js" ]
     }
   }
