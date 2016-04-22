@@ -9,17 +9,17 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
  * User can move the handler in a circle or tap it.
  * Support only 1 touch point
  * 
- * 2 callback:
+ * 3 callback:
  * Output the offset from center in 2 format (x,y / degree,strength)
  * onMove: 
  * ({
  *      x: [int]            (0 - 100)
  *      y: [int]            (0 - 100)
  *      degree: [degree]    (-180 - 180, top is 0)
- *      strength: [int]     (0 - 100)
  * })
  * 
  * onTap()
+ * onStop()
  */
 
 (function (Controller) {
@@ -27,10 +27,6 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
         wrap: '<div class="controller-move"></div>',
         base: '<div class="_base"></div>',
         point: '<div class="_point"></div>',
-    };
-
-    var CssClass = {
-        hover: '_hover'
     };
 
     var Env = {
