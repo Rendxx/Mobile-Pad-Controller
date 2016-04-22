@@ -24,7 +24,7 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
 
 (function (Controller) {
     var HTML = {
-        wrap: '<div class="controller-direction"></div>',
+        wrap: '<div class="controller-button"></div>',
         handler: '<div class="_handler"></div>'
     };
 
