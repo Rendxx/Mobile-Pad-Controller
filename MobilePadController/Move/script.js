@@ -23,6 +23,7 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
  */
 
 (function (Controller) {
+    "use strict";
     var HTML = {
         wrap: '<div class="controller-move"></div>',
         base: '<div class="_base"></div>',
@@ -38,19 +39,23 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
         var that = this,
             // parameters
             _css = null,
-            _threshold = Env.moveThreshold
+            _threshold = Env.moveThreshold,
             // html
             html_container = null,
             html_wrap = null,
             html_base = null,
             line = null,
             // data
+            animationId = null,
             text = null,
+            range= null,
             base_offset_x = null,
             base_offset_y = null,
             identifier = null,
             cache_x = null,
             cache_y = null,
+            line_x = null,
+            line_y = null,
             // flag
             enabled = false,
             using = false,
@@ -71,6 +76,7 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
             base_offset_x = rect.left;
             base_offset_y = rect.top;
             enabled = true;
+            showHandle();
         };
 
         this.hide = function () {
@@ -78,9 +84,23 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
             html_wrap.hide();
             if (using && that.onStop) that.onStop();
             using = false;
+            removeAnimation();
         };
 
         // private function ---------------------------------------------
+
+        // update handle position
+        var showHandle = function () {
+            if (line_x!==null) line.lineTo(line_x, line_y);
+            animationId = requestAnimationFrame(showHandle);
+        };
+
+        // clear handler animation
+        var removeAnimation = function () {
+            if (animationId !== null) cancelAnimationFrame(animationId);
+            animationId = null;
+        };
+
         // output move result
         var output = function (x, y, degree) {
             if (that.onMove != null) that.onMove({
@@ -112,8 +132,9 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
             identifier = touch.identifier;
             cache_x = touch.clientX;
             cache_y = touch.clientY;
-            line.show();
             line.moveTo(touch.clientX - base_offset_x, touch.clientY - base_offset_y);
+            line.lineTo(touch.clientX - base_offset_x, touch.clientY - base_offset_y);
+            line.show();
         };
 
         // setup ---------------------------------------------
@@ -132,7 +153,8 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
                 for (var i = 0; i < event.changedTouches.length; i++) {
                     var touch = event.changedTouches[i];
                     if (touch.identifier == identifier) {
-                        line.lineTo(touch.clientX - base_offset_x, touch.clientY - base_offset_y);
+                        line_x = touch.clientX - base_offset_x;
+                        line_y = touch.clientY - base_offset_y;
                         move(touch.clientX, touch.clientY);
                         break;
                     }
@@ -143,7 +165,7 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
                 event.preventDefault();
                 if (!enabled) return;
                 for (var i = 0; i < event.changedTouches.length; i++) {
-                    touch = event.changedTouches[i];
+                    var touch = event.changedTouches[i];
                     if (touch.identifier == identifier) {
                         if (tapTime != null && (new Date()).getTime() - tapTime < 300) {
                             if (that.onTap) that.onTap();
@@ -153,6 +175,7 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
                         using = false;
                         if (that.onStop) that.onStop();
                         line.hide();
+                        line_x = line_y = null;
                         break;
                     }
                 }
