@@ -70,13 +70,18 @@
         var count = 0;
 
         controller.onTap = function (data) {
-            monitor.html('TAP: ' + ++count);
+            ++count;
+            console.log('TAP: ' + count);
         };
         controller.onPress = function (data) {
-            monitor.html('PRESS: ' + ++count);
+            ++count;
+            monitor.html('PRESS: ' + count);
+            console.log('PRESS: ' + count);
         };
         controller.onRelease = function (data) {
+            ++count;
             monitor.html('RELEASE: ' + count);
+            console.log('RELEASE: ' + count);
         };
         controller.show();
     </script>

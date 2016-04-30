@@ -23,6 +23,7 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
  */
 
 (function (Controller) {
+    "use strict";
     var HTML = {
         wrap: '<div class="controller-button"></div>',
         handler: '<div class="_handler"></div>'
@@ -50,10 +51,10 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
             // data
             text = null,
             identifier = null,
+            pressingFunc = null,
             // flag
             enabled = false,
-            using = false,
-            tapTime = null;
+            using = false;
 
         // callback ---------------------------------------------
         this.onTap = null;
@@ -86,22 +87,27 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
                 if (identifier !== null) return;
                 var touch = event.changedTouches[0];
                 identifier = touch.identifier;
-                tapTime = (new Date()).getTime();
                 html_handler.addClass(CssClass.hover);
-                if (that.onPress) that.onPress();
+                if (pressingFunc !== null) clearTimeout(pressingFunc);
+                pressingFunc = setTimeout(function () {
+                    pressingFunc = null;
+                    if (that.onPress) that.onPress();
+                }, 200);
             }, false);
 
             html_handler[0].addEventListener('touchend', function (event) {
                 event.preventDefault();
                 if (!enabled) return;
                 for (var i = 0; i < event.changedTouches.length; i++) {
-                    touch = event.changedTouches[i];
+                    var touch = event.changedTouches[i];
                     if (touch.identifier == identifier) {
-                        if (that.onRelease) that.onRelease();
-                        if (tapTime != null && (new Date()).getTime() - tapTime < 300) {
+                        if (pressingFunc === null) {
+                            if (that.onRelease) that.onRelease();
+                        } else {
+                            clearTimeout(pressingFunc);
+                            pressingFunc = null;
                             if (that.onTap) that.onTap();
-                        };
-                        tapTime = null;
+                        }
                         html_handler.removeClass(CssClass.hover);
                         identifier = null;
                         using = false;
