@@ -16,6 +16,8 @@
   <ItemGroup>
     <Content Include="Button\sample.html" />
     <Content Include="Button\script.js" />
+    <Content Include="Button\src\canvas-background-sozai6.png" />
+    <Content Include="Button\src\cloth meterial.png" />
     <Content Include="Move\Drawing\Controller.Move.Base.png" />
     <Content Include="Move\Drawing\Controller.Move.line.bg.png" />
     <Content Include="Move\Drawing\Controller.Move.line.end.png" />
@@ -46,6 +48,7 @@
     <Content Include="Info\style.less" />
     <Content Include="Move\Drawing\Controller.Move.fla" />
     <Content Include="Move\style.less" />
+    <Content Include="Button\src\cloth meterial.fla" />
     <None Include="Direction\style.less" />
     <Content Include="ItemViewer\Drawing\bag.fla" />
     <Content Include="Move\Drawing\Controller.Move.line.fla" />
