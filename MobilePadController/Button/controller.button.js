@@ -26,7 +26,8 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
     "use strict";
     var HTML = {
         wrap: '<div class="controller-button"></div>',
-        handler: '<div class="_handler"></div>'
+        handler: '<div class="_handler"></div>',
+        sensor: '<div class="_sensor"></div>'
     };
 
     var CssClass = {
@@ -44,10 +45,12 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
         var that = this,
             // parameters
             _css = null,
+            _cssHandler = null,
             // html
             html_container = null,
             html_wrap = null,
             html_handler = null,
+            html_sensor = null,
             // data
             text = null,
             identifier = null,
@@ -81,7 +84,7 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
 
         // setup ---------------------------------------------
         var _setupFunc = function () {
-            html_handler[0].addEventListener('touchstart', function (event) {
+            html_sensor[0].addEventListener('touchstart', function (event) {
                 event.preventDefault();
                 if (!enabled) return;
                 if (identifier !== null) return;
@@ -95,7 +98,7 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
                 }, 200);
             }, false);
 
-            html_handler[0].addEventListener('touchend', function (event) {
+            html_sensor[0].addEventListener('touchend', function (event) {
                 event.preventDefault();
                 if (!enabled) return;
                 for (var i = 0; i < event.changedTouches.length; i++) {
@@ -121,12 +124,21 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
             // html
             html_wrap = $(HTML.wrap).appendTo(html_container);
             html_handler = $(HTML.handler).appendTo(html_wrap);
+            html_sensor = $(HTML.sensor).appendTo(html_wrap);
             // css
-            html_wrap.css(_css);
+            if (_css !== null) html_wrap.css(_css);
+            html_handler.css({
+                'width': html_wrap.width() - 20,
+                'height': html_wrap.height() - 20,
+                'top': '10px',
+                'left': '10px'
+            });
+            if (_cssHandler!==null) html_handler.css(_cssHandler);
         };
 
         var _setOpts = function (opts) {
             if (opts.css) _css = opts.css;
+            if (opts.cssHandler) _cssHandler = opts.cssHandler;
             if (opts.text) text = opts.text;
         };
 

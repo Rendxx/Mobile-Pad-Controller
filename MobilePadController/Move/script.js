@@ -217,6 +217,12 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
 
             // css
             html_wrap.css(_css);
+            html_base.css({
+                'width': html_wrap.width() - 20,
+                'height': html_wrap.height() - 20,
+                'top': '10px',
+                'left': '10px'
+            });
         };
 
         var _setOpts = function (opts) {
