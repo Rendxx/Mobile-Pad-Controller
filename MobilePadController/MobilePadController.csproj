@@ -52,6 +52,7 @@
     <None Include="Direction\style.less" />
     <Content Include="ItemViewer\Drawing\bag.fla" />
     <Content Include="Move\Drawing\Controller.Move.line.fla" />
+    <Content Include="Move\Drawing\Controller.Move.handler.fla" />
     <None Include="package.json" />
   </ItemGroup>
   <PropertyGroup>
