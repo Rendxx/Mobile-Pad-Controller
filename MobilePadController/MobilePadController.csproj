@@ -19,6 +19,8 @@
     <Content Include="Button\src\canvas-background-sozai6.png" />
     <Content Include="Button\src\cloth meterial.png" />
     <Content Include="Move\Drawing\Controller.Move.Base.png" />
+    <Content Include="Move\Drawing\Controller.Move.Handler1.png" />
+    <Content Include="Move\Drawing\Controller.Move.Handler2.png" />
     <Content Include="Move\Drawing\Controller.Move.line.bg.png" />
     <Content Include="Move\Drawing\Controller.Move.line.end.png" />
     <Content Include="Move\sample.html" />
