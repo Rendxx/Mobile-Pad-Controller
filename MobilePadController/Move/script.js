@@ -94,6 +94,20 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
             removeAnimation();
         };
 
+        this.resize = function () {
+            // data
+            range = html_base.width();
+
+            // css
+            html_wrap.css(_css);
+            html_base.css({
+                'width': html_wrap.width() - 20,
+                'height': html_wrap.height() - 20,
+                'top': '10px',
+                'left': '10px'
+            });
+        };
+
         // private function ---------------------------------------------
 
         // update handle position
@@ -209,18 +223,7 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
             html_base = $(HTML.base).appendTo(html_wrap);
             html_handlerBase = $(HTML.handlerBase).appendTo(html_wrap);
             html_handler = $(HTML.handler).appendTo(html_wrap);
-
-            // data
-            range = html_base.width();
-
-            // css
-            html_wrap.css(_css);
-            html_base.css({
-                'width': html_wrap.width() - 20,
-                'height': html_wrap.height() - 20,
-                'top': '10px',
-                'left': '10px'
-            });
+            that.resize();
         };
 
         var _setOpts = function (opts) {

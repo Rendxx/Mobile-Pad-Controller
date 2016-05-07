@@ -58,6 +58,13 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
             hideFunc = setTimeout(300, function () { html_wrap.hide(); hideFunc = null; });
         };
 
+        this.resize = function () {
+            // data
+
+            // css
+            html_wrap.css(_css);
+        };
+
         // setup ---------------------------------------------
         var _setupFunc = function () {
             html_wrap[0].addEventListener('touchend', function (event) {
@@ -69,11 +76,7 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
         var _setupHtml = function () {
             // html
             html_wrap = $(HTML.wrap).appendTo(html_container);
-
-            // data
-
-            // css
-            html_wrap.css(_css);
+            that.resize();
         };
 
         var _setOpts = function (opts) {

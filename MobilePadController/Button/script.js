@@ -80,6 +80,17 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
             using = false;
         };
 
+        this.resize = function () {
+            if (_css !== null) html_wrap.css(_css);
+            html_handler.css({
+                'width': html_wrap.width() - 20,
+                'height': html_wrap.height() - 20,
+                'top': '10px',
+                'left': '10px'
+            });
+            if (_cssHandler !== null) html_handler.css(_cssHandler);
+        };
+
         // private function ---------------------------------------------
 
         // setup ---------------------------------------------
@@ -126,14 +137,7 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
             html_handler = $(HTML.handler).appendTo(html_wrap);
             html_sensor = $(HTML.sensor).appendTo(html_wrap);
             // css
-            if (_css !== null) html_wrap.css(_css);
-            html_handler.css({
-                'width': html_wrap.width() - 20,
-                'height': html_wrap.height() - 20,
-                'top': '10px',
-                'left': '10px'
-            });
-            if (_cssHandler!==null) html_handler.css(_cssHandler);
+            that.resize();
         };
 
         var _setOpts = function (opts) {
