@@ -63,6 +63,7 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
             cache_y = null,
             pos_x = null,
             pos_y = null,
+            isBrief = null,
             // flag
             enabled = false,
             using = false,
@@ -119,12 +120,12 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
                 });
             } 
 
-            animationId = requestAnimationFrame(showHandle);
+            //animationId = requestAnimationFrame(showHandle);
         };
 
         // clear handler animation
         var removeAnimation = function () {
-            if (animationId !== null) cancelAnimationFrame(animationId);
+            //if (animationId !== null) cancelAnimationFrame(animationId);
             animationId = null;
         };
 
@@ -135,6 +136,10 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
                 y: Math.floor(y * 100 / range),
                 degree: Math.floor(degree * 180 / Math.PI)
             });
+
+            if (!isBrief) {
+                showHandle();
+            }
             //console.log(x + " , " + y)
         };
 
@@ -159,6 +164,7 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
             identifier = touch.identifier;
             cache_x = touch.clientX;
             cache_y = touch.clientY;
+            if (isBrief) return;
             html_handlerBase.css({
                 top: touch.clientY - base_offset_y + 'px',
                 left: touch.clientX - base_offset_x + 'px'
@@ -209,6 +215,7 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
                         using = false;
                         if (that.onStop) that.onStop();
                         pos_x = pos_y = null;
+                        if (isBrief) break;
                         html_handlerBase.removeClass(cssClass.visible);
                         html_handler.removeClass(cssClass.visible);
                         break;
@@ -230,6 +237,7 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
             if (opts.threshold) _threshold = opts.threshold;
             if (opts.css) _css = opts.css;
             if (opts.text) text = opts.text;
+            if (opts.isBrief === true) isBrief = true;
         };
 
         var _init = function (opts) {
