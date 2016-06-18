@@ -33,7 +33,8 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
     };
 
     var cssClass = {
-        visible: '_visible'
+        visible: '_visible',
+        brief: '_brief'
     };
 
     var Env = {
@@ -107,6 +108,12 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
                 'top': '10px',
                 'left': '10px'
             });
+
+            if (isBrief === true) {
+                html_wrap.addClass(cssClass.brief);
+            } else {
+                html_wrap.removeClass(cssClass.brief);
+            }
         };
 
         // private function ---------------------------------------------
@@ -237,7 +244,13 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
             if (opts.threshold) _threshold = opts.threshold;
             if (opts.css) _css = opts.css;
             if (opts.text) text = opts.text;
-            if (opts.isBrief === true) isBrief = true;
+            if (opts.isBrief === true) {
+                isBrief = true;
+                if (html_wrap != null) html_wrap.addClass(cssClass.brief);
+            } else {
+                isBrief = false;
+                if (html_wrap != null) html_wrap.removeClass(cssClass.brief);
+            }
         };
 
         var _init = function (opts) {

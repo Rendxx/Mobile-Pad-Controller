@@ -31,7 +31,8 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
     };
 
     var CssClass = {
-        hover: '_hover'
+        hover: '_hover',
+        brief: '_brief'
     };
 
     var Env = {
@@ -55,6 +56,7 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
             text = null,
             identifier = null,
             pressingFunc = null,
+            isBrief = null,
             // flag
             enabled = false,
             using = false;
@@ -89,6 +91,17 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
                 'left': '10px'
             });
             if (_cssHandler !== null) html_handler.css(_cssHandler);
+
+            if (isBrief === true) {
+                html_wrap.addClass(CssClass.brief);
+                html_handler.css({
+                    'background': 'none',
+                    'background-image': 'none',
+                    'background-color': 'none'
+                });
+            } else {
+                html_wrap.removeClass(CssClass.brief);
+            }
         };
 
         // private function ---------------------------------------------
@@ -144,6 +157,13 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
             if (opts.css) _css = opts.css;
             if (opts.cssHandler) _cssHandler = opts.cssHandler;
             if (opts.text) text = opts.text;
+            if (opts.isBrief === true) {
+                isBrief = true;
+                if (html_wrap != null) html_wrap.addClass(CssClass.brief);
+            } else {
+                isBrief = false;
+                if (html_wrap != null) html_wrap.removeClass(CssClass.brief);
+            }
         };
 
         var _init = function (opts) {
