@@ -32,20 +32,18 @@
       "#dest#/jquery": "#src#/jquery/dist/jquery*.{js,map}"
     },
     "less": {
-      "#direction#/controller.direction": [ "#direction#/style.less" ],
-      "#button#/controller.button": [ "#button#/style.less" ],
-      "#info#/controller.info": [ "#info#/style.less" ],
-      "#move#/controller.move": [ "#move#/style.less" ],
-      "#itemViewer#/controller.itemViewer": [ "#itemViewer#/style.less" ]
+      "#direction#/controller.direction": [ "#direction#/src/controller.direction.less" ],
+      "#button#/controller.button": [ "#button#/src/controller.button.less" ],
+      "#info#/controller.info": [ "#info#/src/controller.info.less" ],
+      "#move#/controller.move": [ "#move#/src/controller.move.less" ],
+      "#itemViewer#/controller.itemViewer": [ "#itemViewer#/src/controller.itemViewer.less" ]
     },
     "js": {
-      "#direction#/controller.direction": [ "#direction#/script.js" ],
-      "#button#/controller.button": [ "#button#/script.js" ],
-      "#info#/controller.info": [ "#info#/script.js" ],
-      "#move#/controller.move": [
-        "#move#/script.js"
-      ],
-      "#itemViewer#/controller.itemViewer": [ "#itemViewer#/script.js" ]
+      "#direction#/controller.direction": [ "#direction#/src/controller.direction.js" ],
+      "#button#/controller.button": [ "#button#/src/controller.button.js" ],
+      "#info#/controller.info": [ "#info#/src/controller.info.js" ],
+      "#move#/controller.move": ["#move#/src/controller.move.js"],
+      "#itemViewer#/controller.itemViewer": [ "#itemViewer#/src/controller.itemViewer.js" ]
     }
   }
 }

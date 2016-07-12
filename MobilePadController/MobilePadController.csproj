@@ -15,28 +15,28 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="Button\sample.html" />
-    <Content Include="Button\script.js" />
-    <Content Include="Button\src\canvas-background-sozai6.png" />
-    <Content Include="Button\src\cloth meterial.png" />
+    <Content Include="Button\src\controller.button.js" />
+    <Content Include="Button\Drawing\canvas-background-sozai6.png" />
+    <Content Include="Button\Drawing\cloth meterial.png" />
     <Content Include="Move\Drawing\Controller.Move.Base.png" />
     <Content Include="Move\Drawing\Controller.Move.Handler1.png" />
     <Content Include="Move\Drawing\Controller.Move.Handler2.png" />
     <Content Include="Move\Drawing\Controller.Move.line.bg.png" />
     <Content Include="Move\Drawing\Controller.Move.line.end.png" />
     <Content Include="Move\sample.html" />
-    <Content Include="Move\script.js" />
+    <Content Include="Move\src\controller.move.js" />
     <Content Include="Info\sample.html" />
-    <Content Include="Info\script.js" />
+    <Content Include="Info\src\controller.info.js" />
     <Content Include="ItemViewer\Drawing\bag.png" />
     <Content Include="ItemViewer\Drawing\dot.png" />
     <Content Include="ItemViewer\Drawing\vintage.png" />
     <Content Include="ItemViewer\sample.html" />
-    <Content Include="ItemViewer\script.js" />
+    <Content Include="ItemViewer\src\controller.itemViewer.js" />
     <Content Include="Direction\Drawing\Controller.Direction.Base.png" />
     <Content Include="Direction\Drawing\Controller.Direction.Handler.png" />
     <Content Include="gulpfile.js" />
     <Content Include="Direction\sample.html" />
-    <Content Include="Direction\script.js" />
+    <Content Include="Direction\src\controller.direction.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="lib\" />
@@ -45,13 +45,13 @@
     <None Include="bower.json" />
     <None Include="bundle.json" />
     <Content Include="Direction\Drawing\Controller.Direction.fla" />
-    <Content Include="Button\style.less" />
-    <Content Include="ItemViewer\style.less" />
-    <Content Include="Info\style.less" />
+    <Content Include="Button\src\controller.button.less" />
+    <Content Include="ItemViewer\src\controller.itemViewer.less" />
+    <Content Include="Info\src\controller.info.less" />
     <Content Include="Move\Drawing\Controller.Move.fla" />
-    <Content Include="Move\style.less" />
-    <Content Include="Button\src\cloth meterial.fla" />
-    <None Include="Direction\style.less" />
+    <Content Include="Move\src\controller.move.less" />
+    <Content Include="Button\Drawing\cloth meterial.fla" />
+    <None Include="Direction\src\controller.direction.less" />
     <Content Include="ItemViewer\Drawing\bag.fla" />
     <Content Include="Move\Drawing\Controller.Move.line.fla" />
     <Content Include="Move\Drawing\Controller.Move.handler.fla" />
