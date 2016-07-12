@@ -61,8 +61,13 @@
             },
             content: '<div class="_midText">INFO TEST</div>'
         });
+        var i = 0;
         controller.onTap = function (data) {
             controller.hide();
+            i++;
+            controller.reset({
+                content: '<div class="_midText">INFO TEST '+i+'</div>'
+            });
         };
         controller.show();
 
