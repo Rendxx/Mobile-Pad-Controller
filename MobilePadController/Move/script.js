@@ -116,6 +116,11 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
             }
         };
 
+        this.reset = function (opts) {
+            _setOpts(opts);
+            this.resize();
+        };
+
         // private function ---------------------------------------------
 
         // update handle position

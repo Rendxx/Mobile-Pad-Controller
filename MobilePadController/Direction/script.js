@@ -94,6 +94,11 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
             using = false;
         };
 
+        this.reset = function (opts) {
+            _setOpts(opts);
+            this.resize();
+        };
+
         // private function ---------------------------------------------
         // output move result
         var output = function (x, y, strength, degree) {

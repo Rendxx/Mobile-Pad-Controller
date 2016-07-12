@@ -65,6 +65,11 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
             html_wrap.css(_css);
         };
 
+        this.reset = function (opts) {
+            _setOpts(opts);
+            this.resize();
+        };
+
         // setup ---------------------------------------------
         var _setupFunc = function () {
             html_wrap[0].addEventListener('touchend', function (event) {
