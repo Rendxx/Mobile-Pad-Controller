@@ -14,6 +14,7 @@ window.Rendxx.Game.Client.Controller = window.Rendxx.Game.Client.Controller || {
  */
 
 (function (Controller) {
+    "use strict";
     var HTML = {
         wrap: '<div class="controller-info"></div>'
     };
