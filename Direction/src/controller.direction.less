@@ -1,0 +1,80 @@
+﻿.controller-direction {
+    width: 300px;
+    height: 300px;
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    overflow: visible;
+
+    ._base {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        margin: 0;
+        overflow: hidden;
+        background-image: url("../Drawing/Controller.Direction.Base.png");
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        z-index: 1;
+
+        &::after {
+            content: attr(data-content);
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            color: #888;
+            font-family: Calibri;
+            font-size: 20px;
+            z-index: 1;
+        }
+    }
+
+    ._handler {
+        width: 40%;
+        height: 40%;
+        position: absolute;
+        border-radius: 50%;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.30);
+        background-image: url("../Drawing/Controller.Direction.Handler.png");
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        z-index: 10;
+
+        &::after {
+            content: '';
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            border: 1px solid rgba(238, 238, 238, 0.50);
+            margin-top: -1px;
+            margin-left: -1px;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            -moz-animation: 0.3s;
+            -o-animation: 0.3s;
+            -webkit-animation: 0.3s;
+            animation: 0.3s;
+        }
+
+        &._hover {
+            &::after {
+                border: 2px solid rgba(238, 238, 238, 0.80);
+                margin-top: -2px;
+                margin-left: -2px;
+                box-shadow: 0 0 5px rgba(0, 130, 255, 0.90);
+            }
+        }
+    }
+}

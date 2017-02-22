@@ -3,11 +3,11 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8" />
-    <script type="text/javascript" src="../lib/jquery.js"></script>
-    <script type="text/javascript" src="controller.direction.js"></script>
-    <link type="text/css" rel="stylesheet" href="controller.direction.css" />
+    <script type="text/javascript" src="../node_modules/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="../_dist/common.js"></script>
+    <script type="text/javascript" src="../_dist/controller.move.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Direction</title>
+    <title>Move</title>
     <style>
         html {
             margin: 0;
@@ -15,6 +15,9 @@
             width: 100%;
             height: 100%;
             background-color: #f2f2f2;
+            -ms-content-zooming: none;
+            -ms-touch-action: none;
+            touch-action: none;
         }
 
         body {
@@ -56,20 +59,25 @@
     <div class="cointainer"></div>
     <script>
         var monitor = $('.monitor');
-        var controller = new Rendxx.Game.Client.Controller.Direction({
+        var controller = new Rendxx.Game.Client.Controller.Move({
             container: $('.cointainer'),
+            threshold: 20,
             css: {
                 'right': '0',
                 'top': '25%'                
             },
-            text: 'TEST'
+            text: 'TEST',
+            isBrief: true
         });
 
         controller.onMove = function (data) {
-            monitor.html('x: ' + data.x + '<br/>y: ' + data.y + '<br/>strength: ' + data.strength + '<br/>degree: ' + data.degree);
+            monitor.html('x: ' + data.x + '<br/>y: ' + data.y + '<br/>degree: ' + data.degree);
         };
-        controller.onTap = function (data) {
-            monitor.html('TAP!');
+        controller.onTap = function () {
+            console.log('TAP');
+        };
+        controller.onStop = function () {
+            monitor.html('x: ' + '-' + '<br/>y: ' + '-' + '<br/>degree: ' + '-');
         };
         controller.show();
     </script>
